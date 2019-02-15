@@ -29,7 +29,7 @@ import Data.Monoid (mconcat,mempty)
 -- | This function transforms a value of type 'LaTeX' to a 'Doc'.
 --   You can then choose how to print this 'Doc' value using
 --   the function from the "Text.PrettyPrint.Free" module.
-docLaTeX :: LaTeX -> Doc ()
+docLaTeX :: LaTeX -> Doc e ()
 docLaTeX (TeXRaw t) = text $ unpack t
 docLaTeX (TeXComm n as) = backslash <> text n <> align (mconcat (fmap docTeXArg as)) <> softline
 docLaTeX (TeXCommS n) = backslash <> text n <> softline
@@ -61,7 +61,7 @@ docLaTeX (TeXComment t) =
 docLaTeX (TeXSeq l1 l2) = docLaTeX l1 <> docLaTeX l2
 docLaTeX TeXEmpty = mempty
 
-docTeXArg :: TeXArg -> Doc ()
+docTeXArg :: TeXArg -> Doc e ()
 docTeXArg (FixArg l) = braces $ docLaTeX l
 docTeXArg (OptArg l) = brackets $ docLaTeX l
 docTeXArg (MOptArg ls) =
